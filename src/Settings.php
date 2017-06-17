@@ -204,7 +204,8 @@ class Settings
     private function getModelInstance($name = null, $module = 'global')
     {
         try {
-            $this->storage = (clone $this->storage)->where('name', $name)->where('module', $module)->firstOrFail();
+            $instance = clone $this->storage;
+            $this->storage = $instance->where('name', $name)->where('module', $module)->firstOrFail();
         } catch (Exception $e) {
             $this->throwException($name, $module);
         }
