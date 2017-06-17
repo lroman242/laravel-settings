@@ -14,7 +14,14 @@ class CreateSettingsTable extends Migration
 	public function up()
 	{
 		Schema::connection(Config::get('settings.connection', null))->create(Config::get('settings.table', 'settings'), function (Blueprint $table) {
-		    self::schema($table);
+            $table->bigIncrements('id');
+            $table->string('module')->nullable()->default('global');
+            $table->string('name');
+            $table->longText('value')->nullable();
+            $table->boolean('active')->default(true);
+            $table->timestamps();
+
+            $table->unique(['module', 'name']);
         });
 	}
 
@@ -27,18 +34,4 @@ class CreateSettingsTable extends Migration
 	{
 		Schema::connection(Config::get('settings.connection', null))->dropIfExists(Config::get('settings.table', 'settings'));
 	}
-
-    /**
-     * @param \Illuminate\Database\Schema\Blueprint $table
-     */
-	public static function schema(Blueprint $table) {
-        $table->bigIncrements('id');
-        $table->string('module')->nullable()->default('global');
-        $table->string('name');
-        $table->longText('value')->nullable();
-        $table->boolean('active')->default(true);
-        $table->timestamps();
-
-        $table->unique(['module', 'name']);
-    }
 }

@@ -17,7 +17,7 @@ abstract class TestCase extends \Tests\TestCase
 
         $this->getPackageProviders();
 
-        if ($this->app['config']->get('settings.driver') != 'json') {
+        if ($this->app['config']->get('settings.driver', 'eloquent') != 'json') {
             $this->migrateDatabase();
         }
     }
@@ -28,7 +28,14 @@ abstract class TestCase extends \Tests\TestCase
         $schemaBuilder = $this->app['db']->connection()->getSchemaBuilder();
 
         $schemaBuilder->create(Config::get('settings.table', 'settings'), function (Blueprint $table) {
-            \CreateSettingsTable::schema($table);
+            $table->bigIncrements('id');
+            $table->string('module')->nullable()->default('global');
+            $table->string('name');
+            $table->longText('value')->nullable();
+            $table->boolean('active')->default(true);
+            $table->timestamps();
+
+            $table->unique(['module', 'name']);
         });
     }
 

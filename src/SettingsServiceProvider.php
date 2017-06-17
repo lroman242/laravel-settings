@@ -19,20 +19,20 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->mergeConfigFrom(__DIR__ . '/config/config.php', 'settings');
+        $this->mergeConfigFrom(__DIR__ . '/config/config.php', 'laravel-settings');
         $this->loadTranslationsFrom(__DIR__ . '/lang', 'laravel-settings');
 
         $this->publishes([
             __DIR__ . '/lang' => resource_path('lang/vendor/laravel-settings'),
-        ], 'laravel-settings-lang');
+        ], 'laravel-settings');
 
         $this->publishes([
             __DIR__ . '/config/config.php' => config_path('settings.php'),
-        ], 'laravel-settings-config');
+        ], 'laravel-settings');
 
         $this->publishes([
             __DIR__ . '/migrations' => database_path('migrations'),
-        ], 'laravel-settings-migrations');
+        ], 'laravel-settings');
     }
 
     /**

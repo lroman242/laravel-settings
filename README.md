@@ -34,7 +34,7 @@ Add provider to app.php config file.
 
 Publish resources
     
-    php artisan vendor:publish --provider=SettingsServiceProvider
+    php artisan vendor:publish --tag=laravel-settings
 
 Manage settings on settings.php config file
 
