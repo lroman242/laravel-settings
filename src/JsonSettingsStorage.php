@@ -27,7 +27,7 @@ class JsonSettingsStorage implements SettingsStorageInterface
         }
 
         if (!file_exists($this->path)) {
-            file_put_contents($this->path, json_encode(array()));
+            file_put_contents($this->path, json_encode([]));
         }
 
         $this->data = $this->newInstance();
@@ -41,8 +41,10 @@ class JsonSettingsStorage implements SettingsStorageInterface
     protected function newInstance()
     {
         $data = json_decode(file_get_contents($this->path), true);
-        if(!is_array($data) || empty($data))
-           $data = [];
+
+        if (!is_array($data) || empty($data)) {
+            $data = [];
+        }
 
         return $data;
     }
@@ -57,8 +59,8 @@ class JsonSettingsStorage implements SettingsStorageInterface
      */
     public function where($key, $value)
     {
-        $this->data = array_filter($this->data, function($item) use ($key, $value){
-            return (bool)($item[$key] == $value);
+        $this->data = array_filter($this->data, function ($item) use ($key, $value) {
+            return (bool) ($item[$key] == $value);
         });
 
         return $this;
@@ -76,9 +78,8 @@ class JsonSettingsStorage implements SettingsStorageInterface
         $item = reset($this->data);
         $this->data = $this->newInstance();
 
-        if(empty($item)){
-            $message = $item['module'] === 'global' ? 'laravel-settings::errors.setting.not_found' : 'laravel-settings::errors.setting.not_found_in_module';
-            throw new SettingNotFoundException(trans($message, ['name' => $item['name'], 'module' => $item['module']]));
+        if (empty($item)) {
+            throw new SettingNotFoundException();
         }
 
         $this->module = $item['module'];
@@ -96,43 +97,45 @@ class JsonSettingsStorage implements SettingsStorageInterface
     {
         $data = $this->newInstance();
 
-        $findData = array_filter($data, function($item){
-            return (bool)($item['name'] == $this->name && $item['module'] == $this->module);
+        $findData = array_filter($data, function ($item) {
+            return (bool) ($item['name'] == $this->name && $item['module'] == $this->module);
         });
 
         $item = reset($findData);
 
-        if(!empty($item)) {
-            $data = array_map(function ($item){
+        if (!empty($item)) {
+            $data = array_map(function ($item) {
                 if ($this->module == $item['module'] && $this->name == $item['name']) {
                     $item['value'] = serialize($this->value);
                     $item['active'] = (bool) $this->active;
                     $item['updated_at'] = (new \DateTime())->format('Y-m-d H:i:s');
                 }
+
                 return $item;
             }, $data);
         } else {
             array_push($data, [
-                'name' => $this->name,
-                'value' => serialize($this->value),
-                'active' => (bool) $this->active,
-                'module' => $this->module,
+                'name'       => $this->name,
+                'value'      => serialize($this->value),
+                'active'     => (bool) $this->active,
+                'module'     => $this->module,
                 'created_at' => (new \DateTime())->format('Y-m-d H:i:s'),
                 'updated_at' => null,
             ]);
         }
 
         //unique
-        $existed = array_map(function($item){
-            return $item['name'].$item['module'];
+        $existed = array_map(function ($item) {
+            return $item['name'] . $item['module'];
         }, $data);
 
-        $data = array_filter($data, function($item) use (&$existed) {
-            $key = array_search($item['name'].$item['module'], $existed);
-            if($key !== false){
+        $data = array_filter($data, function ($item) use (&$existed) {
+            $key = array_search($item['name'] . $item['module'], $existed);
+            if ($key !== false) {
                 unset($existed[$key]);
+
                 return true;
-            }else{
+            } else {
                 return false;
             }
         });
@@ -150,8 +153,8 @@ class JsonSettingsStorage implements SettingsStorageInterface
     public function delete()
     {
         $data = $this->newInstance();
-        $data = array_filter($data, function($item){
-            return !(bool)($this->module == $item['module'] && $this->name == $item['name']);
+        $data = array_filter($data, function ($item) {
+            return !(bool) ($this->module == $item['module'] && $this->name == $item['name']);
         });
 
         $this->setInstance($data);

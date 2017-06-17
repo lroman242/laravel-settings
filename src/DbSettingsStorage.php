@@ -36,8 +36,8 @@ class DbSettingsStorage implements SettingsStorageInterface
      * Create new storage instancecd
      *
      * @param ConnectionResolverInterface $db
-     * @param string|null $connection
-     * @param string $table
+     * @param string|null                 $connection
+     * @param string                      $table
      */
     function __construct(ConnectionResolverInterface $db, $connection = null, $table = 'settings')
     {
@@ -55,6 +55,7 @@ class DbSettingsStorage implements SettingsStorageInterface
     protected function newInstance()
     {
         $this->query = $this->db->connection($this->connection)->table($this->table);
+
         return $this->query;
     }
 
@@ -69,6 +70,7 @@ class DbSettingsStorage implements SettingsStorageInterface
     public function where($key, $value)
     {
         $this->query->where($key, $value);
+
         return $this;
     }
 
@@ -105,20 +107,17 @@ class DbSettingsStorage implements SettingsStorageInterface
     {
         $query = $this->newInstance();
 
-        return $query->updateOrInsert(
-            [
-                'name' => $this->name,
-                'module' => $this->module,
-                'updated_at' => new \DateTime()
-            ],
-            [
-                'name' => $this->name,
-                'value' => serialize($this->value),
-                'active' => (bool) $this->active,
-                'module' => $this->module,
-                'created_at' => new \DateTime(),
-            ]
-        );
+        return $query->updateOrInsert([
+            'name'       => $this->name,
+            'module'     => $this->module,
+            'updated_at' => new \DateTime(),
+        ], [
+            'name'       => $this->name,
+            'value'      => serialize($this->value),
+            'active'     => (bool) $this->active,
+            'module'     => $this->module,
+            'created_at' => new \DateTime(),
+        ]);
     }
 
     /**
@@ -139,8 +138,8 @@ class DbSettingsStorage implements SettingsStorageInterface
             $this->module = null;
 
             return (bool) ($affectedRows > 0);
-        }catch (\Exception $e){
-            return FALSE;
+        } catch (\Exception $e) {
+            return false;
         }
     }
 }

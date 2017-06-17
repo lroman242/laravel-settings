@@ -4,7 +4,7 @@ return [
     /**
      * Database table name in
      */
-    'table' => 'settings',
+    'table'      => 'settings',
 
     /**
      * DB Connection which will be used to get settings
@@ -15,11 +15,10 @@ return [
      * Driver to manage settings
      * Available: json, db, eloquent
      */
-    'driver' => 'eloquent',
+    'driver'     => 'eloquent',
 
     /**
      * Path to save json storage file (if driver is json)
      */
-    'path' => storage_path('app/vendor/settings/settings.json'),
-
+    'path'       => storage_path('app/vendor/settings/settings.json'),
 ];

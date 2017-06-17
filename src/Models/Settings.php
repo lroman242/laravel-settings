@@ -16,9 +16,7 @@ class Settings extends Model
     /**
      * Set setting value as json if array.
      *
-     * @param  string  $value
-     *
-     * @return string
+     * @param  string $value
      */
     public function setValueAttribute($value)
     {
@@ -28,7 +26,7 @@ class Settings extends Model
     /**
      * Return setting value as json if array.
      *
-     * @param  string  $value
+     * @param  string $value
      *
      * @return string
      */

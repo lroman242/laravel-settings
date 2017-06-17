@@ -9,13 +9,13 @@ class EloquentSettingsStorage extends SettingsModel implements SettingsStorageIn
      * Create new storage instance
      *
      * @param bool|string $connection
-     * @param string $table
-     * @param array $attributes
+     * @param string      $table
+     * @param array       $attributes
      */
     public function __construct($connection = false, $table = 'settings', array $attributes = [])
     {
         parent::__construct($attributes);
-        $connection = $connection !== FALSE ? $connection : config('settings.connection');
+        $connection = $connection !== false ? $connection : config('settings.connection');
         $table = !empty($table) ? $table : config('settings.table');
 
         $this->setConnection($connection);
@@ -25,7 +25,7 @@ class EloquentSettingsStorage extends SettingsModel implements SettingsStorageIn
     /**
      * Create a new instance of the given storage
      *
-     * @param array $attributes
+     * @param array      $attributes
      * @param bool|false $exists
      *
      * @return static
@@ -43,7 +43,8 @@ class EloquentSettingsStorage extends SettingsModel implements SettingsStorageIn
      *
      * @return mixed
      */
-    public function firstOrFail() {
+    public function firstOrFail()
+    {
         return static::__call(__FUNCTION__, func_get_args());
     }
 
@@ -55,7 +56,8 @@ class EloquentSettingsStorage extends SettingsModel implements SettingsStorageIn
      *
      * @return mixed
      */
-    public function where($key, $value) {
+    public function where($key, $value)
+    {
         return static::__call(__FUNCTION__, func_get_args());
     }
 }

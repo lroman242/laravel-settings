@@ -2,7 +2,6 @@
 
 namespace lroman242\LaravelSettings;
 
-
 use lroman242\LaravelSettings\Exceptions\SettingNotFoundException;
 use lroman242\LaravelSettings\Tests\TestCase;
 

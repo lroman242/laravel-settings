@@ -2,7 +2,6 @@
 
 namespace lroman242\LaravelSettings;
 
-
 use Illuminate\Support\Facades\Config;
 use lroman242\LaravelSettings\Tests\TestCase;
 

@@ -27,11 +27,11 @@ class SettingsServiceProvider extends ServiceProvider
         ], 'laravel-settings-lang');
 
         $this->publishes([
-            __DIR__ . '/config/config.php' => config_path('settings.php')
+            __DIR__ . '/config/config.php' => config_path('settings.php'),
         ], 'laravel-settings-config');
 
         $this->publishes([
-            __DIR__ . '/migrations' => database_path('migrations')
+            __DIR__ . '/migrations' => database_path('migrations'),
         ], 'laravel-settings-migrations');
     }
 
@@ -40,11 +40,11 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('lroman242\LaravelSettings\SettingsManager', function($app) {
+        $this->app->singleton('lroman242\LaravelSettings\SettingsManager', function ($app) {
             return new SettingsManager($app);
         });
 
-        $this->app->singleton('lroman242\LaravelSettings\SettingsStorage', function($app) {
+        $this->app->singleton('lroman242\LaravelSettings\SettingsStorage', function ($app) {
             return $app->make('lroman242\LaravelSettings\SettingsManager')->driver();
         });
 

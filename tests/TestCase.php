@@ -26,6 +26,7 @@ abstract class TestCase extends \Tests\TestCase
     {
         /** @var \Illuminate\Database\Schema\Builder $schemaBuilder */
         $schemaBuilder = $this->app['db']->connection()->getSchemaBuilder();
+
         $schemaBuilder->create(Config::get('settings.table', 'settings'), function (Blueprint $table) {
             \CreateSettingsTable::schema($table);
         });

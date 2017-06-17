@@ -1,8 +1,8 @@
 <?php
 namespace lroman242\LaravelSettings;
 
-interface SettingsStorageInterface {
-
+interface SettingsStorageInterface
+{
     public function where($key, $value);
 
     public function delete();

@@ -2,7 +2,6 @@
 namespace lroman242\LaravelSettings;
 
 use Illuminate\Support\Manager;
-use lroman242\LaravelSettings\Models\Settings as Model;
 
 class SettingsManager extends Manager
 {
@@ -38,8 +37,7 @@ class SettingsManager extends Manager
     {
         $connectionName = $this->getConfig('connection');
         $table = $this->getConfig('table');
-        //$this->app->make('db');
-        //dd(get_class($this->app['db']));
+
         return new DbSettingsStorage($this->app['db'], $connectionName, $table);
     }
 
@@ -58,8 +56,9 @@ class SettingsManager extends Manager
     /**
      * Helper to get settings config values
      *
-     * @param $key
+     * @param      $key
      * @param null $default
+     *
      * @return mixed
      */
     protected function getConfig($key, $default = null)
