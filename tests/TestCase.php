@@ -5,17 +5,11 @@ namespace lroman242\LaravelSettings\Tests;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Config;
 
-abstract class TestCase extends \Tests\TestCase
+abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
     protected function setUp()
     {
         parent::setUp();
-
-        $this->getEnvironmentSetUp();
-
-        $this->getPackageAliases();
-
-        $this->getPackageProviders();
 
         if ($this->app['config']->get('settings.driver', 'eloquent') != 'json') {
             $this->migrateDatabase();
@@ -41,26 +35,33 @@ abstract class TestCase extends \Tests\TestCase
 
     /**
      * Set up the environment.
+     *
+     * @param \Illuminate\Foundation\Application $app
      */
-    protected function getEnvironmentSetUp()
+    protected function getEnvironmentSetUp($app)
     {
-        $this->app['config']->set('app.debug', true);
-        $this->app['config']->set('database.default', 'sqlite');
-        $this->app['config']->set('database.connections.sqlite', [
+        $app['config']->set('app.debug', true);
+        $app['config']->set('database.default', 'sqlite');
+        $app['config']->set('database.connections.sqlite', [
             'driver'   => 'sqlite',
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+
+        $app['config']->set('settings.table', 'settings');
+        $app['config']->set('settings.connection', null);
+        $app['config']->set('settings.driver', 'eloquent');
+        $app['config']->set('settings.path', storage_path('app/vendor/settings/settings.json'));
     }
 
-    protected function getPackageAliases()
+    protected function getPackageAliases($app)
     {
         return [
             'Settings' => \lroman242\LaravelSettings\Facades\Settings::class,
         ];
     }
 
-    protected function getPackageProviders()
+    protected function getPackageProviders($app)
     {
         return [
             \lroman242\LaravelSettings\SettingsServiceProvider::class,

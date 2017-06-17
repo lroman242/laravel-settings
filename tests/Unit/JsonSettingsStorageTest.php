@@ -5,10 +5,10 @@ namespace lroman242\LaravelSettings;
 
 class JsonSettingsStorageTest extends AbstractSettingsStorageTest
 {
-    protected function getEnvironmentSetUp()
+    protected function getEnvironmentSetUp($app)
     {
-        parent::getEnvironmentSetUp();
+        parent::getEnvironmentSetUp($app);
 
-        $this->app['config']->set('settings.driver', 'json');
+        $app['config']->set('settings.driver', 'json');
     }
 }

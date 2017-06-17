@@ -2,6 +2,7 @@
     "name": "lroman242/laravel-settings",
     "description": "Settings package for Laravel 5",
     "license": "MIT",
+    "version": "1.0.0",
     "keywords": [
         "laravel",
         "settings"
@@ -13,6 +14,9 @@
         }
     ],
     "require": {},
+    "require-dev": {
+        "orchestra/testbench": "v3.4.7"
+    },
     "autoload": {
         "psr-4": {
             "lroman242\\LaravelSettings\\": "src/"

@@ -5,10 +5,10 @@ namespace lroman242\LaravelSettings;
 
 class EloquentSettingsStorageTest extends AbstractSettingsStorageTest
 {
-    protected function getEnvironmentSetUp()
+    protected function getEnvironmentSetUp($app)
     {
-        parent::getEnvironmentSetUp();
+        parent::getEnvironmentSetUp($app);
 
-        $this->app['config']->set('settings.driver', 'eloquent');
+        $app['config']->set('settings.driver', 'eloquent');
     }
 }

@@ -5,11 +5,10 @@ namespace lroman242\LaravelSettings;
 
 class DbSettingsStorageTest extends AbstractSettingsStorageTest
 {
-    protected function getEnvironmentSetUp()
+    protected function getEnvironmentSetUp($app)
     {
-        parent::getEnvironmentSetUp();
+        parent::getEnvironmentSetUp($app);
 
-        $this->app['config']->set('settings.driver', 'db');
-        $this->app->make('Settings');
+        $app['config']->set('settings.driver', 'db');
     }
 }

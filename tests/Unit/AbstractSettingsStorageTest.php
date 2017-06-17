@@ -2,11 +2,14 @@
 
 namespace lroman242\LaravelSettings;
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use lroman242\LaravelSettings\Exceptions\SettingNotFoundException;
 use lroman242\LaravelSettings\Tests\TestCase;
 
 abstract class AbstractSettingsStorageTest extends TestCase
 {
+    use DatabaseMigrations;
+
     public function testHas()
     {
         $settings = $this->app->make('Settings');
