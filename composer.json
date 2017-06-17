@@ -2,18 +2,21 @@
     "name": "lroman242/laravel-settings",
     "description": "Settings package for Laravel 5",
     "license": "MIT",
-    "version": "0.0.1",
+    "keywords": [
+        "laravel",
+        "settings"
+    ],
     "authors": [
         {
             "name": "Roman",
             "email": "lroman242@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {},
     "autoload": {
         "psr-4": {
             "lroman242\\LaravelSettings\\": "src/"
         }
-    }
+    },
+    "minimum-stability": "stable"
 }

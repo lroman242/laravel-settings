@@ -6,7 +6,7 @@ Add to your composer.json
 
     "require": {
        ...
-      "lroman242/laravel-settings": "0.0.1",
+      "lroman242/laravel-settings": "1.*",
        ...
     },
 
@@ -31,6 +31,16 @@ Add provider to app.php config file.
         'Settings' => lroman242\LaravelSettings\Facades\Settings::class,
         ...
     ],
+
+Publish resources
+    
+    php artisan vendor:publish --provider=SettingsServiceProvider
+
+Manage settings on settings.php config file
+
+Run migrations
+
+    php artisan migrate
 
 ### Usage
 #### Has
@@ -111,10 +121,6 @@ Add provider to app.php config file.
     Settings::delete($name);
     Settings::delete($name, $module);
 ```
-### Todos
-
-- Write Tests
-- Cache option
 
 License
 ----
