@@ -13,17 +13,9 @@ class CreateSettingsTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::connection(Config::get('settings.connection', null))->create(Config::get('settings.table', 'settings'), function(Blueprint $table) {
-			$table->BigIncrements('id');
-			$table->string('module')->nullable()->default('global');
-			$table->string('name');
-			$table->longText('value')->nullable();
-			$table->boolean('active')->default(true);
-			$table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
-			$table->timestamp('updated_at')->default(\DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
-
-			$table->unique(['module', 'name']);
-		});
+		Schema::connection(Config::get('settings.connection', null))->create(Config::get('settings.table', 'settings'), function (Blueprint $table) {
+		    self::schema($table);
+        });
 	}
 
 	/**
@@ -35,4 +27,18 @@ class CreateSettingsTable extends Migration
 	{
 		Schema::connection(Config::get('settings.connection', null))->dropIfExists(Config::get('settings.table', 'settings'));
 	}
+
+    /**
+     * @param \Illuminate\Database\Schema\Blueprint $table
+     */
+	public static function schema(Blueprint $table) {
+        $table->bigIncrements('id');
+        $table->string('module')->nullable()->default('global');
+        $table->string('name');
+        $table->longText('value')->nullable();
+        $table->boolean('active')->default(true);
+        $table->timestamps();
+
+        $table->unique(['module', 'name']);
+    }
 }

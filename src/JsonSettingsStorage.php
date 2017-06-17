@@ -22,7 +22,11 @@ class JsonSettingsStorage implements SettingsStorageInterface
     {
         $this->path = !empty($path) ? $path : config('settings.path');
 
-        if(!file_exists($this->path)){
+        if (!file_exists(dirname($this->path))) {
+            mkdir(dirname($this->path), 0777, true);
+        }
+
+        if (!file_exists($this->path)) {
             file_put_contents($this->path, json_encode(array()));
         }
 
@@ -91,26 +95,30 @@ class JsonSettingsStorage implements SettingsStorageInterface
     public function save()
     {
         $data = $this->newInstance();
-        $item = reset(
-            array_filter($data, function($item){
-                return (bool)($item['name'] == $this->name && $item['module'] == $this->module);
-            })
-        );
+
+        $findData = array_filter($data, function($item){
+            return (bool)($item['name'] == $this->name && $item['module'] == $this->module);
+        });
+
+        $item = reset($findData);
 
         if(!empty($item)) {
             $data = array_map(function ($item){
                 if ($this->module == $item['module'] && $this->name == $item['name']) {
                     $item['value'] = serialize($this->value);
                     $item['active'] = (bool) $this->active;
+                    $item['updated_at'] = (new \DateTime())->format('Y-m-d H:i:s');
                 }
                 return $item;
             }, $data);
-        }else {
+        } else {
             array_push($data, [
                 'name' => $this->name,
                 'value' => serialize($this->value),
                 'active' => (bool) $this->active,
                 'module' => $this->module,
+                'created_at' => (new \DateTime())->format('Y-m-d H:i:s'),
+                'updated_at' => null,
             ]);
         }
 
@@ -120,7 +128,8 @@ class JsonSettingsStorage implements SettingsStorageInterface
         }, $data);
 
         $data = array_filter($data, function($item) use (&$existed) {
-            if($key = array_search($item['name'].$item['module'], $existed)){
+            $key = array_search($item['name'].$item['module'], $existed);
+            if($key !== false){
                 unset($existed[$key]);
                 return true;
             }else{

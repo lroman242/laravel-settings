@@ -38,8 +38,9 @@ class SettingsManager extends Manager
     {
         $connectionName = $this->getConfig('connection');
         $table = $this->getConfig('table');
-
-        return new DbSettingsStorage($this->app->make('db'), $connectionName, $table);
+        //$this->app->make('db');
+        //dd(get_class($this->app['db']));
+        return new DbSettingsStorage($this->app['db'], $connectionName, $table);
     }
 
     /**

@@ -84,9 +84,8 @@ class DbSettingsStorage implements SettingsStorageInterface
         $item = $this->query->first();
         $this->query = $this->newInstance();
 
-        if(empty($item)){
-            $message = $item->module === 'global' ? 'laravel-settings::errors.setting.not_found' : 'laravel-settings::errors.setting.not_found_in_module';
-            throw new SettingNotFoundException(trans($message, ['name' => $item->name, 'module' => $item->module]));
+        if (empty($item)) {
+            throw new SettingNotFoundException();
         }
 
         $this->module = $item->module;
@@ -109,13 +108,15 @@ class DbSettingsStorage implements SettingsStorageInterface
         return $query->updateOrInsert(
             [
                 'name' => $this->name,
-                'module' => $this->module
+                'module' => $this->module,
+                'updated_at' => new \DateTime()
             ],
             [
                 'name' => $this->name,
                 'value' => serialize($this->value),
                 'active' => (bool) $this->active,
                 'module' => $this->module,
+                'created_at' => new \DateTime(),
             ]
         );
     }

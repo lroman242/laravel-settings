@@ -204,10 +204,10 @@ class Settings
     private function getModelInstance($name = NULL, $module = 'global')
     {
         try {
-            $this->storage = (new $this->storage)->where('name', $name)->where('module', $module)->firstOrFail();
+            $this->storage = (clone $this->storage)->where('name', $name)->where('module', $module)->firstOrFail();
 
             return $this;
-        } catch (ModelNotFoundException $e) {
+        } catch (\Exception $e) {
             $this->throwException($name, $module);
         }
     }
@@ -219,7 +219,7 @@ class Settings
      */
     private function create()
     {
-        $this->storage = new $this->storage;
+        $this->storage = clone $this->storage;
 
         return $this;
     }
@@ -235,6 +235,7 @@ class Settings
     private function throwException($name, $module = 'global')
     {
         $message = $module === 'global' ? 'laravel-settings::errors.setting.not_found' : 'laravel-settings::errors.setting.not_found_in_module';
+
         throw new SettingNotFoundException(trans($message, ['name' => $name, 'module' => $module]));
     }
 }
